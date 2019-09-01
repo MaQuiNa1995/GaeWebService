@@ -16,12 +16,10 @@
 package es.maquina.gae.pedidosjapon.persistencia.dominio;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 @Entity
-@JsonIgnoreProperties
 public class Pedido {
 
 	@Id
