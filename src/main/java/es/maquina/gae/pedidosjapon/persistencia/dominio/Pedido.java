@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.maquina.gae.pedidosjapon.dominio;
+package es.maquina.gae.pedidosjapon.persistencia.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 @Entity
+@JsonIgnoreProperties
 public class Pedido {
 
 	@Id
+	@JsonIgnore
 	private Long id;
 	private String nombrePedido;
 

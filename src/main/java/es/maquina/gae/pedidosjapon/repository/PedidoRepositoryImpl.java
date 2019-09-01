@@ -15,23 +15,57 @@
  */
 package es.maquina.gae.pedidosjapon.repository;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Query;
+
+import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 
 @Repository
 public class PedidoRepositoryImpl extends GenericCrudDaoImpl implements PedidoRepository {
 
+	private static final String NOMBRE_PEDIDO = "NOMBRE_PEDIDO";
 	public static final String TABLA = "PEDIDO";
 
-	/* (non-Javadoc)
-	 * @see es.maquina.gae.pedidosjapon.repository.PedidoRepository#save(java.lang.String)
-	 */
+	@Override
 	public void save(String nombrePedido) {
 
 		Entity entidadGuardar = new Entity(TABLA);
 
-		entidadGuardar.setProperty("NOMBRE_PEDIDO", nombrePedido);
+		entidadGuardar.setProperty(NOMBRE_PEDIDO, nombrePedido);
+
+		getDatastore().put(entidadGuardar);
+
+	}
+
+	@Override
+	public List<Pedido> findAll() {
+		Query query = new Query(TABLA);
+
+		Iterator<Entity> iteradorEntidades = getDatastore().prepare(query)
+				.asIterable(FetchOptions.Builder.withDefaults()).iterator();
+
+		List<Pedido> listaPedidos = new ArrayList<>();
+
+		while (iteradorEntidades.hasNext()) {
+			Entity entidad = iteradorEntidades.next();
+
+			String nombrePedido = (String) entidad.getProperty(NOMBRE_PEDIDO);
+
+			Pedido pedido = new Pedido();
+			pedido.setNombrePedido(nombrePedido);
+
+			listaPedidos.add(pedido);
+
+		}
+
+		return listaPedidos;
 
 	}
 

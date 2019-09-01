@@ -15,11 +15,14 @@
  */
 package es.maquina.gae.pedidosjapon.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 import es.maquina.gae.pedidosjapon.service.PedidoService;
 
 @RestController
@@ -28,10 +31,17 @@ public class PedidoControllerImpl implements PedidoController {
 	@Autowired
 	private PedidoService pedidoService;
 
+	@Override
 	@GetMapping(path = "/guardarPedido")
 	public String guardarPedido(@RequestParam(value = "nombrePedido") String nombrePedido) {
 
 		return pedidoService.guardarPedido(nombrePedido);
+	}
+
+	@Override
+	@GetMapping(path = "/verPedidos")
+	public List<Pedido> verPedidos() {
+		return pedidoService.verPedidos();
 	}
 
 }

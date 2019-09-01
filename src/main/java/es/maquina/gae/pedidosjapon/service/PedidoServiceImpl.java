@@ -15,10 +15,13 @@
  */
 package es.maquina.gae.pedidosjapon.service;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 import es.maquina.gae.pedidosjapon.repository.PedidoRepository;
 
 @Service
@@ -27,13 +30,7 @@ public class PedidoServiceImpl implements PedidoService {
 	@Autowired
 	private PedidoRepository pedidoRepository;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * es.maquina.gae.pedidosjapon.service.PedidoService#guardarPedido(java.lang.
-	 * String)
-	 */
+	@Override
 	public String guardarPedido(String nombrePedido) {
 
 		String respuesta = "Se ha guardado el pedido satisfactoriamente";
@@ -45,6 +42,11 @@ public class PedidoServiceImpl implements PedidoService {
 		}
 
 		return respuesta;
+	}
+
+	@Override
+	public List<Pedido> verPedidos() {
+		return pedidoRepository.findAll();
 	}
 
 }
