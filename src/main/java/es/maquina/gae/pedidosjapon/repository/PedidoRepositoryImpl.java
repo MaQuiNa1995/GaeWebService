@@ -13,17 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.maquina.gae.pedidosjapon.controller;
+package es.maquina.gae.pedidosjapon.repository;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Repository;
 
-@RestController
-public class SaludarController {
+import com.google.appengine.api.datastore.Entity;
 
-	@RequestMapping("/saludar")
-	public String saludar() {
-		return "Hola mundo en google app engine";
+@Repository
+public class PedidoRepositoryImpl extends GenericCrudDaoImpl implements PedidoRepository {
+
+	public static final String TABLA = "PEDIDO";
+
+	/* (non-Javadoc)
+	 * @see es.maquina.gae.pedidosjapon.repository.PedidoRepository#save(java.lang.String)
+	 */
+	public void save(String nombrePedido) {
+
+		Entity entidadGuardar = new Entity(TABLA);
+
+		entidadGuardar.setProperty("NOMBRE_PEDIDO", nombrePedido);
 
 	}
 
