@@ -18,9 +18,14 @@ package es.maquina.gae.pedidosjapon.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 import es.maquina.gae.pedidosjapon.service.PedidoService;
@@ -30,6 +35,16 @@ public class PedidoControllerImpl implements PedidoController {
 
 	@Autowired
 	private PedidoService pedidoService;
+
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String home() {
+		return "site.home";
+	}
+
+	@RequestMapping(value = "/greet/{name}", method = RequestMethod.GET)
+	public ModelAndView greetTwoWays(@PathVariable(value = "name") final String name, final Model model) {
+		return new ModelAndView("site.greeting", "name", name);
+	}
 
 	@Override
 	@GetMapping(path = "/guardarPedido")
