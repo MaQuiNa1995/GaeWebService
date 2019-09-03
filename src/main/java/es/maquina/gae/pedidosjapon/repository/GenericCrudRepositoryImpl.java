@@ -21,18 +21,18 @@ import com.google.appengine.api.datastore.Transaction;
 import es.maquina.gae.pedidosjapon.persistencia.dominio.Persistible;
 
 /**
- * Implementación de la interfaz {@link GenericCrudDao} que contiene las
+ * Implementación de la interfaz {@link GenericCrudRepository} que contiene las
  * operaciones básicas de base de datos
  * <p>
  * Esta clase no tiene javadoc porque se obtiene de la interfaz y está linkada a
  * esta si quieres mas información ve a la interfaz anteriormente mencionada
  * 
- * @author cmunozas
+ * @author MaQuiNa1995
  *
  */
-public abstract class GenericCrudDaoImpl<T extends Persistible<Long>> implements GenericCrudDao<T> {
+public abstract class GenericCrudRepositoryImpl<T extends Persistible<Long>> implements GenericCrudRepository<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GenericCrudDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericCrudRepositoryImpl.class);
 
 	/**
 	 * Paginación por defecto
@@ -47,20 +47,11 @@ public abstract class GenericCrudDaoImpl<T extends Persistible<Long>> implements
 	/**
 	 * Constructor por defecto que inicializa el objeto de la base de datos
 	 */
-	protected GenericCrudDaoImpl() {
+	protected GenericCrudRepositoryImpl() {
 		if (datastore == null) {
 			datastore = DatastoreServiceFactory.getDatastoreService();
 		}
 	}
-
-	@Override
-	public abstract T entityToPojo(Entity entidad);
-
-	@Override
-	public abstract Entity pojoToEntity(T pojo);
-
-	@Override
-	public abstract String getNombreTabla();
 
 	@Override
 	public void addOrUpdate(List<T> entidades) {
@@ -177,6 +168,15 @@ public abstract class GenericCrudDaoImpl<T extends Persistible<Long>> implements
 
 		LOGGER.info("Se han borrado {0} entidad/es ", listaEntidades.size());
 	}
+
+	@Override
+	public abstract T entityToPojo(Entity entidad);
+
+	@Override
+	public abstract Entity pojoToEntity(T pojo);
+
+	@Override
+	public abstract String getNombreTabla();
 
 	/**
 	 * Método usado para obtener la base de datos para poder hacer consultas mas

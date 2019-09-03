@@ -33,12 +33,12 @@ import es.maquina.gae.pedidosjapon.persistencia.dominio.Persistible;
  * </UL>
  * </UL>
  * 
- * @author cmunozas
+ * @author MaQuiNa1995
  * 
  * @see <a href="https://es.wikipedia.org/wiki/CRUD">Documentación CRUD</a>
  * 
  */
-public interface GenericCrudDao<T extends Persistible<Long>> {
+public interface GenericCrudRepository<T extends Persistible<Long>> {
 
 	/**
 	 * Metodo usado para crear o updatear una entidad
@@ -72,7 +72,7 @@ public interface GenericCrudDao<T extends Persistible<Long>> {
 	/**
 	 * Método usado para obtener una lista de objetos de base de datos haciendo un
 	 * SELECT * FROM {@link #getNombreTabla()} paginado a
-	 * {@link GenericCrudDaoImpl#PAGINACION}
+	 * {@link GenericCrudRepositoryImpl#PAGINACION}
 	 * 
 	 * @return {@link java.util.List} de objetos leidos
 	 */
