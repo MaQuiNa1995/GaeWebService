@@ -43,6 +43,13 @@ public interface GenericCrudRepository<T extends Persistible<Long>> {
 	/**
 	 * Metodo usado para crear o updatear una entidad
 	 * 
+	 * @param entidad objeto a insertar en base de datos
+	 */
+	void addOrUpdate(T entidad);
+
+	/**
+	 * Metodo usado para crear o updatear una lista de entidades
+	 * 
 	 * @param arrayEntidades java.util.ArrayList lista de objetos genericos para
 	 *                       crear o modificar (depende de si tienen id o no las
 	 *                       crea o las updatea)

@@ -54,6 +54,18 @@ public abstract class GenericCrudRepositoryImpl<T extends Persistible<Long>> imp
 	}
 
 	@Override
+	public void addOrUpdate(T entidad) {
+		Transaction transaccion = datastore.beginTransaction();
+
+		datastore.put(pojoToEntity(entidad));
+
+		transaccion.commit();
+
+		LOGGER.info("Se añadió correctamente la entidad a la base de datos");
+
+	}
+
+	@Override
 	public void addOrUpdate(List<T> entidades) {
 		Transaction transaccion = datastore.beginTransaction();
 
@@ -67,7 +79,7 @@ public abstract class GenericCrudRepositoryImpl<T extends Persistible<Long>> imp
 
 		transaccion.commit();
 
-		LOGGER.info(String.format("Se añaden %1$s entidad/es a la base de datos", entidades.size()));
+		LOGGER.info(String.format("Se añaden {0} entidad/es a la base de datos", entidades.size()));
 
 	}
 
