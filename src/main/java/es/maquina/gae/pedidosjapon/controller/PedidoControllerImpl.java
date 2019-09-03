@@ -33,9 +33,8 @@ public class PedidoControllerImpl implements PedidoController {
 
 	@Override
 	@GetMapping(path = "/guardarPedido")
-	public String guardarPedido(@RequestParam(value = "nombrePedido") String nombrePedido) {
-
-		return pedidoService.guardarPedido(nombrePedido);
+	public void guardarPedido(@RequestParam(value = "pedido") Pedido pedido) {
+		pedidoService.guardarPedido(pedido);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 
 public interface PedidoService {
 
-	String guardarPedido(String nombrePedido);
+	void guardarPedido(Pedido pedido);
 
 	List<Pedido> verPedidos();
 

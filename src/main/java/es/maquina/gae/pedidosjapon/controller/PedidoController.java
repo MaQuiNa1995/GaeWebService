@@ -8,6 +8,6 @@ public interface PedidoController {
 
 	List<Pedido> verPedidos();
 
-	String guardarPedido(String nombrePedido);
+	void guardarPedido(Pedido pedido);
 
 }

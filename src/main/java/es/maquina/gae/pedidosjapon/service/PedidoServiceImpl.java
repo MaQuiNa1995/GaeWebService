@@ -17,7 +17,6 @@ package es.maquina.gae.pedidosjapon.service;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +30,8 @@ public class PedidoServiceImpl implements PedidoService {
 	private PedidoRepository pedidoRepository;
 
 	@Override
-	public String guardarPedido(String nombrePedido) {
-
-		String respuesta = "Se ha guardado el pedido satisfactoriamente";
-
-		if (StringUtils.isBlank(nombrePedido) == Boolean.FALSE) {
-			pedidoRepository.save(nombrePedido);
-		} else {
-			respuesta = "El nombre de pedido no debe ser nulo vacío o con solo espacios";
-		}
-
-		return respuesta;
+	public void guardarPedido(Pedido pedido) {
+		pedidoRepository.addOrUpdate(pedido);
 	}
 
 	@Override
