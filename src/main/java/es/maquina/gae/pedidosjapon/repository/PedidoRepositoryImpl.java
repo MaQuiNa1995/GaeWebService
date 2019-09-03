@@ -15,58 +15,51 @@
  */
 package es.maquina.gae.pedidosjapon.repository;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.Query;
 
 import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 
 @Repository
-public class PedidoRepositoryImpl extends GenericCrudDaoImpl implements PedidoRepository {
+public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> implements PedidoRepository {
 
+	private String tablaRepository = "PEDIDO";
+
+	private static final String IMPORTE_MAXIMO = "IMPORTE_MAXIMO";
+	private static final String SOLICITANTE = "SOLICITANTE";
 	private static final String NOMBRE_PEDIDO = "NOMBRE_PEDIDO";
-	public static final String TABLA = "PEDIDO";
+	private static final String PRECIO = "PRECIO";
 
 	@Override
-	public void save(String nombrePedido) {
+	public Pedido entityToPojo(Entity entidad) {
 
-		Entity entidadGuardar = new Entity(TABLA);
+		String nombrePedido = (String) entidad.getProperty(NOMBRE_PEDIDO);
+		String solicitante = (String) entidad.getProperty(SOLICITANTE);
+		Integer importeMaximo = (Integer) entidad.getProperty(IMPORTE_MAXIMO);
 
-		entidadGuardar.setProperty(NOMBRE_PEDIDO, nombrePedido);
+		Pedido pedido = new Pedido();
+		pedido.setNombrePedido(nombrePedido);
+		pedido.setSolicitante(solicitante);
+		pedido.setImporteMaximo(importeMaximo);
 
-		getDatastore().put(entidadGuardar);
-
+		return pedido;
 	}
 
 	@Override
-	public List<Pedido> findAll() {
-		Query query = new Query(TABLA);
+	public Entity pojoToEntity(Pedido pojo) {
+		Entity entidadGuardar = new Entity(tablaRepository);
 
-		Iterator<Entity> iteradorEntidades = getDatastore().prepare(query)
-				.asIterable(FetchOptions.Builder.withDefaults()).iterator();
+		entidadGuardar.setIndexedProperty(NOMBRE_PEDIDO, pojo.getNombrePedido());
+		entidadGuardar.setIndexedProperty(SOLICITANTE, pojo.getNombrePedido());
+		entidadGuardar.setProperty(IMPORTE_MAXIMO, pojo.getNombrePedido());
+		entidadGuardar.setProperty(PRECIO, pojo.getNombrePedido());
 
-		List<Pedido> listaPedidos = new ArrayList<>();
-
-		while (iteradorEntidades.hasNext()) {
-			Entity entidad = iteradorEntidades.next();
-
-			String nombrePedido = (String) entidad.getProperty(NOMBRE_PEDIDO);
-
-			Pedido pedido = new Pedido();
-			pedido.setNombrePedido(nombrePedido);
-
-			listaPedidos.add(pedido);
-
-		}
-
-		return listaPedidos;
-
+		return entidadGuardar;
 	}
 
+	@Override
+	public String getNombreTabla() {
+		return tablaRepository;
+	}
 }
