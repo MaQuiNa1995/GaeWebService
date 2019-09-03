@@ -35,7 +35,7 @@ public abstract class GenericCrudRepositoryImpl<T extends Persistible<Long>> imp
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericCrudRepositoryImpl.class);
 
 	/**
-	 * Paginación por defecto
+	 * Paginación por defecto de 300 registros
 	 */
 	protected static final FetchOptions PAGINACION = FetchOptions.Builder.withLimit(300);
 
