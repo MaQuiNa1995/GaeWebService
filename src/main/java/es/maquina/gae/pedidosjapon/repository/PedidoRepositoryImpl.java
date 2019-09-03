@@ -29,18 +29,21 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 	private static final String IMPORTE_MAXIMO = "IMPORTE_MAXIMO";
 	private static final String SOLICITANTE = "SOLICITANTE";
 	private static final String NOMBRE_PEDIDO = "NOMBRE_PEDIDO";
+	private static final String PAGADO = "PAGADO";
 
 	@Override
 	public Pedido entityToPojo(Entity entidad) {
 
 		String nombrePedido = (String) entidad.getProperty(NOMBRE_PEDIDO);
 		String solicitante = (String) entidad.getProperty(SOLICITANTE);
+		Boolean isPagado = (Boolean) entidad.getProperty(PAGADO);
 		Long importeMaximo = (Long) entidad.getProperty(IMPORTE_MAXIMO);
 
 		Pedido pedido = new Pedido();
 		pedido.setNombrePedido(nombrePedido);
 		pedido.setSolicitante(solicitante);
 		pedido.setImporteMaximo(importeMaximo);
+		pedido.setPagado(isPagado);
 
 		return pedido;
 	}
@@ -52,6 +55,7 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 		entidadGuardar.setIndexedProperty(NOMBRE_PEDIDO, pojo.getNombrePedido());
 		entidadGuardar.setIndexedProperty(SOLICITANTE, pojo.getSolicitante());
 		entidadGuardar.setProperty(IMPORTE_MAXIMO, pojo.getImporteMaximo());
+		entidadGuardar.setProperty(PAGADO, Boolean.FALSE);
 
 		return entidadGuardar;
 	}

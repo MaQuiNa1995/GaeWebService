@@ -15,12 +15,19 @@
  */
 package es.maquina.gae.pedidosjapon.persistencia.dominio;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 @Entity
-public class Pedido implements Persistible<Long> {
+public class Pedido implements Persistible<Long>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3663741852066684082L;
 
 	@Id
 	@JsonIgnore
@@ -28,6 +35,7 @@ public class Pedido implements Persistible<Long> {
 	private String nombrePedido;
 	private String solicitante;
 	private Long importeMaximo = 0L;
+	private Boolean pagado = Boolean.FALSE;
 
 	@Override
 	public Long getId() {
@@ -61,6 +69,14 @@ public class Pedido implements Persistible<Long> {
 
 	public void setImporteMaximo(Long importeMaximo) {
 		this.importeMaximo = importeMaximo;
+	}
+
+	public Boolean isPagado() {
+		return pagado;
+	}
+
+	public void setPagado(Boolean pagado) {
+		this.pagado = pagado;
 	}
 
 }
