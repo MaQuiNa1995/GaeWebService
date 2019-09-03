@@ -19,21 +19,22 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 import es.maquina.gae.pedidosjapon.service.PedidoService;
 
-@RestController
+@RestController("/pedidos")
 public class PedidoControllerImpl implements PedidoController {
 
 	@Autowired
 	private PedidoService pedidoService;
 
 	@Override
-	@GetMapping(path = "/guardarPedido")
-	public void guardarPedido(@RequestParam(value = "pedido") Pedido pedido) {
+	@PutMapping(path = "/guardarPedido")
+	public void guardarPedido(@RequestBody Pedido pedido) {
 		pedidoService.guardarPedido(pedido);
 	}
 
