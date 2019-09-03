@@ -1,9 +1,12 @@
 package es.maquina.gae.pedidosjapon.repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -11,7 +14,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Transaction;
+
+import es.maquina.gae.pedidosjapon.persistencia.dominio.Persistible;
 
 /**
  * Implementación de la interfaz {@link GenericCrudDao} que contiene las
@@ -23,10 +30,13 @@ import com.google.appengine.api.datastore.Transaction;
  * @author cmunozas
  *
  */
-public abstract class GenericCrudDaoImpl implements GenericCrudDao {
+public abstract class GenericCrudDaoImpl<T extends Persistible<Long>> implements GenericCrudDao<T> {
 
-	private static final Logger LOGGER = Logger.getLogger(GenericCrudDaoImpl.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericCrudDaoImpl.class);
 
+	/**
+	 * Paginación por defecto
+	 */
 	protected static final FetchOptions PAGINACION = FetchOptions.Builder.withLimit(300);
 
 	/**
@@ -37,87 +47,135 @@ public abstract class GenericCrudDaoImpl implements GenericCrudDao {
 	/**
 	 * Constructor por defecto que inicializa el objeto de la base de datos
 	 */
-	protected GenericCrudDaoImpl() {
+	private GenericCrudDaoImpl() {
 		if (datastore == null) {
 			datastore = DatastoreServiceFactory.getDatastoreService();
 		}
 	}
 
 	@Override
-	public Entity[] addOrUpdate(Entity... entidades) {
+	public abstract T entityToPojo(Entity entidad);
 
+	@Override
+	public abstract Entity pojoToEntity(T pojo);
+
+	@Override
+	public abstract String getNombreTabla();
+
+	@Override
+	public void addOrUpdate(List<T> entidades) {
 		Transaction transaccion = datastore.beginTransaction();
 
-		// Se crea o updatean las entidades del array que se pasó como parametro
-		// pasándolo a una lista
-		datastore.put(Arrays.asList(entidades));
+		List<Entity> listaEntidades = new ArrayList<>();
+
+		entidades.stream().forEach(e -> {
+			listaEntidades.add(pojoToEntity(e));
+		});
+
+		datastore.put(listaEntidades);
 
 		transaccion.commit();
 
-		LOGGER.info(String.format("Se añaden %1$s entidad/es a la base de datos", entidades.length));
+		LOGGER.info(String.format("Se añaden %1$s entidad/es a la base de datos", entidades.size()));
 
-		return entidades;
 	}
 
 	@Override
-	public Entity readById(Key id) {
+	public T readById(Long id) {
 
-		Entity entidad = null;
+		T entidad = null;
 
-		if (id != null) {
+		String tabla = getNombreTabla();
+
+		if (id != null && StringUtils.isBlank(tabla) == Boolean.FALSE) {
+
+			Key idBaseDatos = KeyFactory.createKey(getNombreTabla(), id);
+
 			try {
-
-				// Se recupera la entidad de base de datos por Id
-				entidad = datastore.get(id);
-				LOGGER.info(String.format("Se ha recuperado la entidad con id %1$s", entidad.getKey().getId()));
-
-			} catch (EntityNotFoundException exception) {
-				entidad = null;
-				LOGGER.warning(String.format("La entidad con id: %1$s no existe en la base de datos mas info: %2$s ",
-						id, exception.getMessage()));
+				entidad = entityToPojo(datastore.get(idBaseDatos));
+				LOGGER.info("Se ha recuperado la entidad satisfactoriamente");
+			} catch (EntityNotFoundException e) {
+				LOGGER.error("No se ha encontrado la entidad con el id especificado");
 			}
+
+		} else {
+			LOGGER.error("La id o la tabla pasados como parametro son inválidos");
 		}
 
 		return entidad;
 	}
 
 	@Override
-	public List<Entity> readByIdList(List<Key> listaIds) {
+	public List<T> readByIdList(List<Long> listaIds) {
 
-		List<Entity> listaEntidades = new ArrayList<>();
+		List<T> listaObjetos = new ArrayList<>();
 
-		if (listaIds != null && listaIds.isEmpty() == Boolean.FALSE) {
+		String tabla = getNombreTabla();
 
-			// Se hace un arraylist nuevo porque el .values() devuelve una coleccion y de
-			// esta forma nos evitamos un cast explicito
-			listaEntidades = new ArrayList<>(datastore.get(listaIds).values());
-			LOGGER.info(String.format("Se ha recuperado las entidades con ids %1$s", listaIds.toArray()));
+		if (listaIds != null && listaIds.isEmpty() == Boolean.FALSE && StringUtils.isBlank(tabla) == Boolean.FALSE) {
+			List<Key> listaKeys = new ArrayList<>();
+
+			listaIds.stream().filter(Objects::nonNull).forEach(e -> {
+				listaKeys.add(KeyFactory.createKey(getNombreTabla(), e));
+			});
+
+			List<Entity> listaEntidades = (List<Entity>) datastore.get(listaKeys).values();
+
+			LOGGER.info(String.format("Se ha recuperado  %1$s Entidades", listaEntidades.size()));
+
+			listaEntidades.stream().forEach(e -> {
+				listaObjetos.add(entityToPojo(e));
+			});
 
 		} else {
-			LOGGER.warning(
+			LOGGER.error(
 					"la lista que se le ha pasado como parametro al método está vacía o es nula se devuelve una lista vacía");
 		}
 
-		return listaEntidades;
+		return listaObjetos;
 	}
 
 	@Override
-	public void delete(Entity... entidades) {
+	public List<T> findAll() {
+
+		List<T> listaEntidades = new ArrayList<>();
+
+		String tabla = getNombreTabla();
+
+		if (StringUtils.isBlank(tabla) == Boolean.FALSE) {
+			Query query = new Query(tabla);
+			List<Entity> listaEntidadesBd = getDatastore().prepare(query).asList(FetchOptions.Builder.withDefaults());
+
+			listaEntidadesBd.stream().forEach(e -> {
+				listaEntidades.add(entityToPojo(e));
+			});
+
+		} else {
+			LOGGER.error("el nombre de la tabla pasado como argumento no es válido");
+
+		}
+
+		return listaEntidades;
+
+	}
+
+	@Override
+	public void delete(List<T> listaEntidades) {
 
 		// Se crea una lista para hacer un borrado de una lista de Id
-		List<Key> listaIdBorrar = new ArrayList<>();
-		for (Entity entidad : entidades) {
-			listaIdBorrar.add(entidad.getKey());
-		}
+		List<Key> listaKeys = new ArrayList<>();
+
+		listaEntidades.stream().map(e -> e.getId()).forEach(e -> {
+			listaKeys.add(KeyFactory.createKey(getNombreTabla(), e));
+		});
 
 		Transaction transaccion = datastore.beginTransaction();
 
-		// Se borran las entidades
-		datastore.delete(listaIdBorrar);
+		datastore.delete(listaKeys);
 
 		transaccion.commit();
 
-		LOGGER.info(String.format("Se han borrado entidad/es con id:  %1$s", listaIdBorrar.toArray()));
+		LOGGER.info("Se han borrado {0} entidad/es ", listaEntidades.size());
 	}
 
 	/**

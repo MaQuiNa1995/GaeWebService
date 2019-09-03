@@ -20,17 +20,21 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 @Entity
-public class Pedido {
+public class Pedido implements Persistible<Long> {
 
 	@Id
 	@JsonIgnore
 	private Long id;
 	private String nombrePedido;
+	private String solicitante;
+	private Integer importeMaximo = 0;
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -41,6 +45,22 @@ public class Pedido {
 
 	public void setNombrePedido(String nombrePedido) {
 		this.nombrePedido = nombrePedido;
+	}
+
+	public String getSolicitante() {
+		return solicitante;
+	}
+
+	public void setSolicitante(String solicitante) {
+		this.solicitante = solicitante;
+	}
+
+	public int getImporteMaximo() {
+		return importeMaximo;
+	}
+
+	public void setImporteMaximo(Integer importeMaximo) {
+		this.importeMaximo = importeMaximo;
 	}
 
 }
