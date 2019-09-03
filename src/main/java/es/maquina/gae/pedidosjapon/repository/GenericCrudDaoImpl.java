@@ -47,7 +47,7 @@ public abstract class GenericCrudDaoImpl<T extends Persistible<Long>> implements
 	/**
 	 * Constructor por defecto que inicializa el objeto de la base de datos
 	 */
-	private GenericCrudDaoImpl() {
+	protected GenericCrudDaoImpl() {
 		if (datastore == null) {
 			datastore = DatastoreServiceFactory.getDatastoreService();
 		}
