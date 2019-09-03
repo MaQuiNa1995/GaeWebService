@@ -71,7 +71,7 @@ public abstract class GenericCrudRepositoryImpl<T extends Persistible<Long>> imp
 
 		List<Entity> listaEntidades = new ArrayList<>();
 
-		entidades.stream().forEach(e -> {
+		entidades.stream().filter(Objects::nonNull).forEach(e -> {
 			listaEntidades.add(pojoToEntity(e));
 		});
 
