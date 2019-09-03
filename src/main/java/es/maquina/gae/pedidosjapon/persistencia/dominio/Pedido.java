@@ -27,7 +27,7 @@ public class Pedido implements Persistible<Long> {
 	private Long id;
 	private String nombrePedido;
 	private String solicitante;
-	private Integer importeMaximo = 0;
+	private Long importeMaximo = 0L;
 
 	@Override
 	public Long getId() {
@@ -55,11 +55,11 @@ public class Pedido implements Persistible<Long> {
 		this.solicitante = solicitante;
 	}
 
-	public int getImporteMaximo() {
+	public Long getImporteMaximo() {
 		return importeMaximo;
 	}
 
-	public void setImporteMaximo(Integer importeMaximo) {
+	public void setImporteMaximo(Long importeMaximo) {
 		this.importeMaximo = importeMaximo;
 	}
 
