@@ -112,12 +112,12 @@
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>1.3.1</version>
-<!-- 				<configuration> -->
-<!-- 					<jvmFlags> -->
-<!-- 						<jvmFlag>-Xdebug</jvmFlag> -->
-<!-- 						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag> -->
-<!-- 					</jvmFlags> -->
-<!-- 				</configuration> -->
+				<configuration>
+					<jvmFlags>
+						<jvmFlag>-Xdebug</jvmFlag>
+						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y</jvmFlag>
+					</jvmFlags>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
