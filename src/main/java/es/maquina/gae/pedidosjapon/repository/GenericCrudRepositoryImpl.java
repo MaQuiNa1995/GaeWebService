@@ -147,7 +147,7 @@ public abstract class GenericCrudRepositoryImpl<T extends Persistible<Long>> imp
 
 		if (StringUtils.isBlank(tabla) == Boolean.FALSE) {
 			Query query = new Query(tabla);
-			List<Entity> listaEntidadesBd = getDatastore().prepare(query).asList(FetchOptions.Builder.withDefaults());
+			List<Entity> listaEntidadesBd = getDatastore().prepare(query).asList(PAGINACION);
 
 			listaEntidadesBd.stream().forEach(e -> {
 				listaEntidades.add(entityToPojo(e));
