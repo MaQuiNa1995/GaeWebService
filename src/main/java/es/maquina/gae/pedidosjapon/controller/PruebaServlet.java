@@ -3,8 +3,15 @@ package es.maquina.gae.pedidosjapon.controller;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import es.maquina.gae.pedidosjapon.service.PedidoService;
+
 @WebServlet(name = "pruebaServlet")
 public class PruebaServlet extends HttpServlet {
+
+	@Autowired
+	private PedidoService pedidoService;
 
 	/**
 	 * 

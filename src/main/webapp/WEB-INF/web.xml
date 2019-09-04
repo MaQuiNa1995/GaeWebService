@@ -18,12 +18,12 @@
 
 	<servlet>
 		<servlet-name>pruebaServlet</servlet-name>
-		<jsp-file>/views/hello.jsp</jsp-file>
+		<jsp-file>/views/formularioAlta.jsp</jsp-file>
 	</servlet>
 	<!--mapping -->
 	<servlet-mapping>
 		<servlet-name>pruebaServlet</servlet-name>
-		<url-pattern>/test/*</url-pattern>
+		<url-pattern>/formularioAlta/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- <welcome-file-list> -->

@@ -79,4 +79,19 @@ public class Pedido implements Persistible<Long>, Serializable {
 		this.pagado = pagado;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido [nombrePedido=");
+		builder.append(nombrePedido);
+		builder.append(", solicitante=");
+		builder.append(solicitante);
+		builder.append(", importeMaximo=");
+		builder.append(importeMaximo);
+		builder.append(", pagado=");
+		builder.append(pagado);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
