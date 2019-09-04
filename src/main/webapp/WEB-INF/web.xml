@@ -5,29 +5,16 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 
-	<!-- <servlet> -->
-	<!-- <servlet-name>prueba</servlet-name> -->
-	<!-- <servlet-class>es.maquina.gae.pedidosjapon.controller.PruebaServlet</servlet-class> -->
-	<!-- </servlet> -->
-
-	<!-- <servlet-mapping> -->
-	<!-- <servlet-name>HelloAppEngine</servlet-name> -->
-	<!-- <url-pattern>/*</url-pattern> -->
-	<!-- </servlet-mapping> -->
-
-
+	<!--Servlets -->
 	<servlet>
-		<servlet-name>pruebaServlet</servlet-name>
+		<servlet-name>servletFormularioAlta</servlet-name>
 		<jsp-file>/views/formularioAlta.jsp</jsp-file>
 	</servlet>
-	<!--mapping -->
+
+	<!--Mapeo De Servlets -->
 	<servlet-mapping>
-		<servlet-name>pruebaServlet</servlet-name>
+		<servlet-name>servletFormularioAlta</servlet-name>
 		<url-pattern>/formularioAlta/*</url-pattern>
 	</servlet-mapping>
-
-	<!-- <welcome-file-list> -->
-	<!-- <welcome-file>hello.jsp</welcome-file> -->
-	<!-- </welcome-file-list> -->
 
 </web-app>
