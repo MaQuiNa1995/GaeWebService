@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<!-- <servlet> -->
+	<!-- <servlet-name>prueba</servlet-name> -->
+	<!-- <servlet-class>es.maquina.gae.pedidosjapon.controller.PruebaServlet</servlet-class> -->
+	<!-- </servlet> -->
+
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>HelloAppEngine</servlet-name> -->
+	<!-- <url-pattern>/*</url-pattern> -->
+	<!-- </servlet-mapping> -->
+
+
+	<servlet>
+		<servlet-name>pruebaServlet</servlet-name>
+		<jsp-file>/views/hello.jsp</jsp-file>
+	</servlet>
+	<!--mapping -->
+	<servlet-mapping>
+		<servlet-name>pruebaServlet</servlet-name>
+		<url-pattern>/test/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- <welcome-file-list> -->
+	<!-- <welcome-file>hello.jsp</welcome-file> -->
+	<!-- </welcome-file-list> -->
 
 </web-app>
