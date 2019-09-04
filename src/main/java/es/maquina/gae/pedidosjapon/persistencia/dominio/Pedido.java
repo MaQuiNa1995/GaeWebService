@@ -34,7 +34,7 @@ public class Pedido implements Persistible<Long>, Serializable {
 	private Long id;
 	private String nombrePedido;
 	private String solicitante;
-	private Long importeMaximo = 0L;
+	private Double importeMaximo = 0D;
 	private Boolean pagado = Boolean.FALSE;
 
 	@Override
@@ -63,11 +63,11 @@ public class Pedido implements Persistible<Long>, Serializable {
 		this.solicitante = solicitante;
 	}
 
-	public Long getImporteMaximo() {
+	public Double getImporteMaximo() {
 		return importeMaximo;
 	}
 
-	public void setImporteMaximo(Long importeMaximo) {
+	public void setImporteMaximo(Double importeMaximo) {
 		this.importeMaximo = importeMaximo;
 	}
 
@@ -77,21 +77,6 @@ public class Pedido implements Persistible<Long>, Serializable {
 
 	public void setPagado(Boolean pagado) {
 		this.pagado = pagado;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Pedido [nombrePedido=");
-		builder.append(nombrePedido);
-		builder.append(", solicitante=");
-		builder.append(solicitante);
-		builder.append(", importeMaximo=");
-		builder.append(importeMaximo);
-		builder.append(", pagado=");
-		builder.append(pagado);
-		builder.append("]");
-		return builder.toString();
 	}
 
 }

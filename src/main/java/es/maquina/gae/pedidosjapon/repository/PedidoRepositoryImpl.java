@@ -24,6 +24,8 @@ import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 @Repository
 public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> implements PedidoRepository {
 
+	private static final Double VALOR_YENES_EURO = 117.195D;
+
 	private String tablaRepository = "PEDIDO";
 
 	private static final String IMPORTE_MAXIMO = "IMPORTE_MAXIMO";
@@ -42,10 +44,23 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 		Pedido pedido = new Pedido();
 		pedido.setNombrePedido(nombrePedido);
 		pedido.setSolicitante(solicitante);
-		pedido.setImporteMaximo(importeMaximo);
+
+		// FIXME se hace aqui como medida temporal hasta que sepa como hacer llamadas
+		// ajax al controller
+		pedido.setImporteMaximo(euroToYen(importeMaximo));
 		pedido.setPagado(isPagado);
 
 		return pedido;
+	}
+
+	/**
+	 * 
+	 * @param importeMaximo
+	 * @return
+	 */
+	private Double euroToYen(Long importeMaximo) {
+
+		return importeMaximo * VALOR_YENES_EURO;
 	}
 
 	@Override

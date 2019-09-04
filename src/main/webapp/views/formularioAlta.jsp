@@ -6,34 +6,40 @@
 
 	<div>
 		<h1>Nombre Del pedido:</h1>
-		<input name="nombrePedido" type="text"
-			value=<%=request.getParameter("nombrePedido")%>>
+		<input name="nombrePedido" type="text" value="">
 	</div>
 	<p>
 	<div>
 		<h1>Solicitante:</h1>
-		<input name="solicitante" type="text"
-			value=<%=request.getParameter("solicitante")%>>
+		<input name="solicitante" type="text" value="">
 	</div>
 	<p>
 	<div>
 		<h1>Importe Maximo:</h1>
-		<input name="importeMaximo" type="text"
-			value=<%=request.getParameter("importeMaximo")%>>
+		<input name="importeMaximo" type="number" value=0>
 	</div>
+	
 	<p>
 	<div>
 		<input type="submit" value="Enviar">
-		<%@page
-			import="es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido"%>
+		<%@ page import="es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido"%>
+		<%@ page import="es.maquina.gae.pedidosjapon.repository.PedidoRepositoryImpl"%>
 		<%
-			Pedido pedido = new Pedido();
-			pedido.setSolicitante(request.getParameter("solicitante"));
-			pedido.setSolicitante(request.getParameter("importeMaximo"));
-			pedido.setNombrePedido(request.getParameter("nombrePedido"));
+		Pedido pedido = new Pedido();
+		pedido.setSolicitante(request.getParameter("solicitante"));
+		
+		//FIXME Arreglar cuando sepa mas de los jsp esta sentencia se ejecuta cuando carga la pagina y no se porque
+		Double importe = 0D;
+		if(request.getParameter("importeMaximo") != null){
+			importe = Double.valueOf(request.getParameter("importeMaximo"));
+		}
+		
+		pedido.setImporteMaximo(importe);
+		pedido.setNombrePedido(request.getParameter("nombrePedido"));
 
-			// FIXME quitar prueba para ver como se formaba el objeto
-			System.out.println(pedido.toString());
+		// FIXME pequeña ñapa para guardar objetos sustituir por una llamada AJAX
+		PedidoRepositoryImpl repository = new PedidoRepositoryImpl();
+		repository.addOrUpdate(pedido);
 		%>
 	</div>
 </form>
