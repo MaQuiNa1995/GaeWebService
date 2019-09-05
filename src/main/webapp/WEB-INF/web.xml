@@ -5,16 +5,15 @@
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 
-	<!--Servlets -->
 	<servlet>
-		<servlet-name>servletFormularioAlta</servlet-name>
+		<servlet-name>pruebaServlet</servlet-name>
 		<jsp-file>/views/formularioAlta.jsp</jsp-file>
 	</servlet>
-
-	<!--Mapeo De Servlets -->
+	<!--mapping -->
 	<servlet-mapping>
-		<servlet-name>servletFormularioAlta</servlet-name>
+		<servlet-name>pruebaServlet</servlet-name>
 		<url-pattern>/formularioAlta/*</url-pattern>
 	</servlet-mapping>
+
 
 </web-app>

@@ -1,6 +1,7 @@
 package es.maquina.gae.pedidosjapon.persistencia.dominio;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.googlecode.objectify.annotation.Entity;
@@ -24,6 +25,8 @@ public class Pedido implements Persistible<Long>, Serializable {
 	private String solicitante;
 	private Double importeMaximo = 0D;
 	private Boolean pagado = Boolean.FALSE;
+	private String descripcion;
+	private LocalDateTime fechaAlta;
 
 	@Override
 	public Long getId() {
@@ -65,6 +68,22 @@ public class Pedido implements Persistible<Long>, Serializable {
 
 	public void setPagado(Boolean pagado) {
 		this.pagado = pagado;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public LocalDateTime getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(LocalDateTime fechaAlta) {
+		this.fechaAlta = fechaAlta;
 	}
 
 }

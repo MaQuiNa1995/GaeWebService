@@ -3,6 +3,8 @@ package es.maquina.gae.pedidosjapon.repository;
 import org.springframework.stereotype.Repository;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.repackaged.org.joda.time.DateTimeZone;
+import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
 
 import es.maquina.gae.pedidosjapon.persistencia.dominio.Pedido;
 
@@ -17,6 +19,8 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 	private static final String SOLICITANTE = "SOLICITANTE";
 	private static final String NOMBRE_PEDIDO = "NOMBRE_PEDIDO";
 	private static final String PAGADO = "PAGADO";
+	private static final String DESCRIPCION = "DESCRIPCION";
+	private static final String FECHA = "FECHA";
 
 	@Override
 	public Pedido entityToPojo(Entity entidad) {
@@ -24,6 +28,7 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 		String nombrePedido = (String) entidad.getProperty(NOMBRE_PEDIDO);
 		String solicitante = (String) entidad.getProperty(SOLICITANTE);
 		Boolean isPagado = (Boolean) entidad.getProperty(PAGADO);
+		String descripcion = (String) entidad.getProperty(DESCRIPCION);
 		// FIXME arreglar ya que en base de datos se guarda como Double
 		Double importeMaximo = (Double) entidad.getProperty(IMPORTE_MAXIMO);
 
@@ -32,6 +37,7 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 		pedido.setSolicitante(solicitante);
 		pedido.setImporteMaximo(importeMaximo);
 		pedido.setPagado(isPagado);
+		pedido.setDescripcion(descripcion);
 
 		return pedido;
 	}
@@ -47,6 +53,8 @@ public class PedidoRepositoryImpl extends GenericCrudRepositoryImpl<Pedido> impl
 		// ajax al controller
 		entidadGuardar.setProperty(IMPORTE_MAXIMO, euroToYen(pojo.getImporteMaximo()));
 		entidadGuardar.setProperty(PAGADO, Boolean.FALSE);
+		entidadGuardar.setProperty(DESCRIPCION, pojo.getDescripcion());
+		entidadGuardar.setProperty(FECHA, LocalDateTime.now(DateTimeZone.forID("Asia/Tokyo")));
 
 		return entidadGuardar;
 	}
