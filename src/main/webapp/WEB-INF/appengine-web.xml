@@ -19,5 +19,4 @@
 	<resource-files>
 		<include path="/resources/**" />
 	</resource-files>
-
 </appengine-web-app>
